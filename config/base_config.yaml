@@ -1,24 +1,26 @@
 data:
-  raw_path: "data/VNF_performance_metrics.csv"
+  source: "sqlite"
+  db_path: "data/VNF_performance_metrics.db"
+  table_name: "VNF_KPI_database"
   train_ratio: 0.8
   n_steps: 120
   n_future_steps: 30
   features:
     - "cpu_usage_firewall"
-    - "transmission_rate_firewall"
+    - "traffic_rate_firewall"
     - "processing_delay_firewall"
     - "cpu_usage_dpi"
-    - "transmission_rate_dpi"
+    - "traffic_rate_dpi"
     - "processing_delay_dpi"
     - "cpu_usage_enc"
-    - "transmission_rate_enc"
-    - "processing_delay_encryption"
+    - "traffic_rate_enc"
+    - "processing_delay_enc"
     - "cpu_usage_comp"
-    - "transmission_rate_comp"
-    - "processing_delay_compression"
+    - "traffic_rate_comp"
+    - "processing_delay_comp"
     - "memory_usage_dpi"
 
 training:
-  epochs: 1000
+  epochs: 10
   batch_size: 64
   learning_rate: 0.001
