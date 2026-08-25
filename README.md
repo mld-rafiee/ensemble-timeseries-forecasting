@@ -54,9 +54,11 @@ If you find this repository useful for your research or work, please cite our or
 ```bibtex
 @inproceedings{rafiee2025proactive,
   title={A Proactive Performance Prediction Framework for Virtual Network Functions in 5G Networks},
-  author={Rafiee, Milad and Ocampo, Andres F. and Taherkordi, Amir and Alay, "{O}zg"{u}},
-  booktitle={IEEE International Conference on Network and Service Management (CNSM)},
+  author={Rafiee, Milad and Ocampo, Andres F and Taherkordi, Amir and Alay, Özgü},
+  booktitle={2025 21st International Conference on Network and Service Management (CNSM)},
+  pages={1--7},
   year={2025},
+  organization={IEEE},
   address={Bologna, Italy}
 }
 ```
