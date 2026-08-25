@@ -21,7 +21,7 @@ class StackingEnsemble:
         self.meta_model = None
         self.weights = None
         
-    def fit(self, X_train, y_train, X_val, y_val):
+    def fit(self, X_train, y_train, X_val, y_val, config):
         """
         Train the stacking ensemble using the validation set.
         
@@ -58,7 +58,7 @@ class StackingEnsemble:
 
         # Instantiate the XGBoost meta-learner
         self.meta_model = xgb.XGBRegressor(
-            n_estimators=10,
+            n_estimators=config['training']['n_estimators'],
             learning_rate=0.05,
             max_depth=6,
             eval_metric='rmse'
