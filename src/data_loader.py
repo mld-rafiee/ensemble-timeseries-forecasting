@@ -5,9 +5,10 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from config import get_project_root
 import os
+import sqlite3
 
 def remove_unit_suffix(value):
-    """Remove unit suffixes from values (e.g., '128Mi' -> 128)."""
+    """Remove unit suffixes from values (e.g., '128Mi' -> 128, '700m' -> 700)."""
     if isinstance(value, str):
         for suffix in ["m", "Mi", "Gi"]:
             if value.endswith(suffix):
@@ -27,19 +28,26 @@ def split_sequence_multi_output(sequence, n_steps, n_future_steps):
     return np.array(X), np.array(y)
 
 def load_and_preprocess_data(config):
-    """Load and preprocess the VNF KPI dataset."""
+    """Load and preprocess the VNF KPI dataset from SQLite."""
     project_root = get_project_root()
-    file_path = os.path.join(project_root, config['data']['raw_path'])
-    
-    # Load data
-    data = pd.read_csv(file_path)
-    
-    # Remove unit suffixes
-    data = data.applymap(remove_unit_suffix)
-    
-    # Select features
+    db_path = os.path.join(project_root, config['data']['db_path'])
+    table_name = config['data']['table_name']
     features = config['data']['features']
-    data = data[features]
+    
+    # Connect to SQLite database
+    conn = sqlite3.connect(db_path)
+    
+    # Read data from table
+    query = f"SELECT {', '.join(features)} FROM {table_name} ORDER BY Timestamp"
+    data = pd.read_sql_query(query, conn)
+    conn.close()
+    
+    # Apply remove_unit_suffix to all columns (safe for numeric)
+    for col in data.columns:
+        data[col] = data[col].apply(remove_unit_suffix)
+    
+    # Convert all columns to numeric (coerce errors to NaN)
+    data = data.apply(pd.to_numeric, errors='coerce')
     
     # Remove rows with NaN
     data = data.dropna()
