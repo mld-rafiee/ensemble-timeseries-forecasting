@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first (for better caching)
+# Copy requirements first
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
