@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # JOB 1: Lint (Code Quality) - Using Ruff
+
+  lint:
+    name: Code Quality (Ruff)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Run Ruff (linter)
+        run: ruff check src/
+
+      - name: Run Ruff (formatter)
+        run: ruff format src/ --check
