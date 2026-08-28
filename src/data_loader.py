@@ -1,19 +1,23 @@
 """Data loading and preprocessing module."""
 
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from config import get_project_root
 import os
 import sqlite3
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+from config import get_project_root
+
 
 def remove_unit_suffix(value):
     """Remove unit suffixes from values (e.g., '128Mi' -> 128, '700m' -> 700)."""
     if isinstance(value, str):
         for suffix in ["m", "Mi", "Gi"]:
             if value.endswith(suffix):
-                return float(value[:-len(suffix)])
+                return float(value[: -len(suffix)])
     return value
+
 
 def split_sequence_multi_output(sequence, n_steps, n_future_steps):
     """Split sequence into input and multi-step output."""
@@ -27,64 +31,65 @@ def split_sequence_multi_output(sequence, n_steps, n_future_steps):
         y.append(sequence[end_ix:future_end_ix])
     return np.array(X), np.array(y)
 
+
 def load_and_preprocess_data(config):
     """Load and preprocess the VNF KPI dataset from SQLite."""
     project_root = get_project_root()
-    db_path = os.path.join(project_root, config['data']['db_path'])
-    table_name = config['data']['table_name']
-    features = config['data']['features']
-    
+    db_path = os.path.join(project_root, config["data"]["db_path"])
+    table_name = config["data"]["table_name"]
+    features = config["data"]["features"]
+
     # Connect to SQLite database
     conn = sqlite3.connect(db_path)
-    
+
     # Read data from table
     query = f"SELECT {', '.join(features)} FROM {table_name} ORDER BY Timestamp"
     data = pd.read_sql_query(query, conn)
     conn.close()
-    
+
     # Apply remove_unit_suffix to all columns (safe for numeric)
     for col in data.columns:
         data[col] = data[col].apply(remove_unit_suffix)
-    
+
     # Convert all columns to numeric (coerce errors to NaN)
-    data = data.apply(pd.to_numeric, errors='coerce')
-    
+    data = data.apply(pd.to_numeric, errors="coerce")
+
     # Remove rows with NaN
     data = data.dropna()
-    
+
     # Split into train/test
     n_samples = data.shape[0]
-    train_size = int(n_samples * config['data']['train_ratio'])
+    train_size = int(n_samples * config["data"]["train_ratio"])
     train_data = data[:train_size]
     test_data = data[train_size:]
-    
+
     # Normalize
     scaler = MinMaxScaler()
     train_scaled = scaler.fit_transform(train_data)
     test_scaled = scaler.transform(test_data)
-    
+
     # Create sequences
-    n_steps = config['data']['n_steps']
-    n_future = config['data']['n_future_steps']
+    n_steps = config["data"]["n_steps"]
+    n_future = config["data"]["n_future_steps"]
     n_features = len(features)
-    
+
     X_train, y_train = split_sequence_multi_output(train_scaled, n_steps, n_future)
     X_test, y_test = split_sequence_multi_output(test_scaled, n_steps, n_future)
-    
+
     # Reshape to (samples, n_steps, n_features)
     X_train = X_train.reshape((X_train.shape[0], X_train.shape[1], n_features))
     X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], n_features))
     y_train = y_train.reshape((y_train.shape[0], y_train.shape[1], n_features))
     y_test = y_test.reshape((y_test.shape[0], y_test.shape[1], n_features))
-    
+
     return {
-        'X_train': X_train,
-        'y_train': y_train,
-        'X_test': X_test,
-        'y_test': y_test,
-        'scaler': scaler,
-        'feature_names': features,
-        'n_features': n_features,
-        'n_steps': n_steps,
-        'n_future_steps': n_future
+        "X_train": X_train,
+        "y_train": y_train,
+        "X_test": X_test,
+        "y_test": y_test,
+        "scaler": scaler,
+        "feature_names": features,
+        "n_features": n_features,
+        "n_steps": n_steps,
+        "n_future_steps": n_future,
     }
