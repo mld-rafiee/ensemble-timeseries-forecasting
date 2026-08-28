@@ -7,9 +7,9 @@ import numpy as np
 import tensorflow as tf
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-from config import get_project_root, load_config
-from data_loader import load_and_preprocess_data
-from ensemble import StackingEnsemble
+from .config import get_project_root, load_config
+from .data_loader import load_and_preprocess_data
+from .ensemble import StackingEnsemble
 
 
 def denormalize_predictions(predictions, scaler):

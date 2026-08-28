@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-from config import get_project_root
+from .config import get_project_root
 
 
 def remove_unit_suffix(value):
