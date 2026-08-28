@@ -52,6 +52,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov
+          pip install -e .   # Install the src package
 
       - name: Create dummy database for testing
         run: |
@@ -89,6 +90,8 @@ jobs:
           sqlite3 VNF_performance_metrics.db "SELECT * FROM VNF_KPI_database LIMIT 3;"
 
       - name: Run tests with coverage
+        env:
+          PYTHONPATH: .
         run: |
           pytest tests/ -v --cov=src --cov-report=term --cov-report=xml
 
