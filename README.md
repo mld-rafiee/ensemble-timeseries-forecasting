@@ -1,6 +1,6 @@
-# Stacking Ensemble Forecaster for VNF Performance Metrics
+# Stacking Ensemble Forecaster for Multi-Variate VNF Performance Metrics
 
-**Multi-Step Time-Series Forecasting of CPU, Memory, Processing Latency, and Traffic Load in Virtual Network Functions.**
+**Multi-Variate, Multi-Step Time-Series Forecasting of CPU, Memory, Processing Latency, and Traffic Load in Virtual Network Functions.**
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.10+-orange.svg)](https://www.tensorflow.org/)
@@ -10,7 +10,7 @@
 
 ## 🚀 Overview
 
-This repository contains the official implementation of a robust **Stacking Ensemble framework** for forecasting key performance metrics of Virtual Network Functions (VNFs) within a 5G Service Function Chain (SFC). The framework forecast **four critical performance metrics**:
+This repository contains the official implementation of a robust **Stacking Ensemble framework** for **multi-variate** forecasting key performance metrics of Virtual Network Functions (VNFs) within a 5G Service Function Chain (SFC). The framework forecast **four critical performance metrics**:
 
 - ⚙️ **CPU Usage**
 - 🧠 **Memory Usage**
