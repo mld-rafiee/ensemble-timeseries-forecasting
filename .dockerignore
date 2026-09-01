@@ -1,0 +1,14 @@
+__pycache__
+*.pyc
+.venv
+venv
+.git
+.github
+.gitignore
+*.md
+data/
+VNF_performance_metrics.db
+*.db
+*.ipynb
+.idea
+.vscode
