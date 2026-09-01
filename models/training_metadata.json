@@ -1,0 +1,24 @@
+{
+  "config_hash": "beeedaa9e1bdd98d74ad0c74f9cfd7e9",
+  "epochs": 10,
+  "meta_params": {
+    "meta_type": "ridge"
+  },
+  "features": [
+    "cpu_usage_firewall",
+    "traffic_rate_firewall",
+    "processing_delay_firewall",
+    "cpu_usage_dpi",
+    "traffic_rate_dpi",
+    "processing_delay_dpi",
+    "cpu_usage_enc",
+    "traffic_rate_enc",
+    "processing_delay_enc",
+    "cpu_usage_comp",
+    "traffic_rate_comp",
+    "processing_delay_comp",
+    "memory_usage_dpi"
+  ],
+  "n_steps": 120,
+  "n_future_steps": 30
+}
